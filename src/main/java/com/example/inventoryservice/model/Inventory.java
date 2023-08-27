@@ -6,21 +6,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import model.BaseEntity;
 
+import java.io.Serial;
+
+@Table(name = "inventory")
 @Entity
-@Table(name = "i_inventories")
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
+@Builder
 @NoArgsConstructor
-public class Inventory {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class Inventory extends BaseEntity<String> {
+
+    @Serial
+    private static final long serialVersionUID = 3739703697L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String skuCode;
     private Integer quantity;
 }
