@@ -10,9 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import model.BaseEntity;
+import com.example.springbootmicroservicesframework.model.BaseEntity;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 @Table(name = "inventory")
 @Entity
@@ -21,7 +22,7 @@ import java.io.Serial;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Inventory extends BaseEntity<String> {
+public class Inventory extends BaseEntity<String> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3739703697L;
