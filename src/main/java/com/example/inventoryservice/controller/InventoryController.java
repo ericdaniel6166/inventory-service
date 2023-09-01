@@ -24,6 +24,7 @@ public class InventoryController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<InventoryResponse> isInStock(@RequestParam List<String> skuCode) {
+//        log.info("Test distributed tracing, skuCode: {}", skuCode.toString());
         return inventoryService.isInStock(skuCode);
     }
 }
