@@ -1,5 +1,53 @@
+app:
+  application-name: inventory-service
+  server-port: 8083
+  #  server-port: 0
+  eureka-hostname: localhost
+  eureka-port: 8761
+  database-hostname: localhost
+  database-port: 5434
+  database-name: inventory_service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-hostname}:${app.eureka-port}/eureka
+
 spring:
-  profiles:
-    active:
-      - base
-      - local
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0.0
+    locations: classpath:db/migration/
+    validate-on-migrate: true
+    enabled: true
+    table: schema_history
+  application:
+    name: ${app.application-name}
+  datasource:
+    url: jdbc:postgresql://${app.database-hostname}:${app.database-port}/${app.database-name}
+    username: postgres
+    password: secret
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: ${app.server-port}
+
+logging:
+  level:
+    root: INFO
