@@ -1,4 +1,4 @@
-package com.example.inventoryservice.controller;
+package com.example.inventoryservice.api;
 
 import com.example.inventoryservice.dto.InventoryResponse;
 import com.example.inventoryservice.service.InventoryService;
