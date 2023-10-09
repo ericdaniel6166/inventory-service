@@ -7,6 +7,10 @@ app:
   database-hostname: localhost
   database-port: 5434
   database-name: inventory_service
+  kafka-hostname: localhost
+  kafka-port: 9092
+  kafka-default-topic: notificationTopic
+  kafka-concurrency: 3
 
 eureka:
   client:
@@ -36,6 +40,20 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  kafka:
+    enabled: true
+    bootstrap-servers: ${app.kafka-hostname}:${app.kafka-port}
+    template:
+      default-topic: ${app.kafka-default-topic}
+    producers:
+      order-item-not-available:
+        topic-name: order-item-not-available
+    consumers:
+      order-pending:
+        topic-name: order-pending
+        group-id: order-pending
+        properties:
+          concurrency: ${app.kafka-concurrency}
 
 management:
   health:
