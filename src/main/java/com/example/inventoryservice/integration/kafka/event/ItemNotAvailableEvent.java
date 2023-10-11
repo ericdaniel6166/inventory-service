@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -15,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class ItemNotAvailableEvent implements Serializable {
-    static final long serialVersionUID = 12345L;
+public class ItemNotAvailableEvent {
 
     Long orderId;
     List<ItemNotAvailable> itemNotAvailableList;
