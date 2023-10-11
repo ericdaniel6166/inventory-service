@@ -1,94 +1,94 @@
-begin;
+BEGIN;
 
-insert into category (name, created_by, created_date, last_modified_by, last_modified_date)
-values ('Electronics', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Clothing', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Home & Garden', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Toys & Games', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Sports & Outdoors', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Books', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Furniture', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Jewelry', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Health & Beauty', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year'),
-       ('Food', 'inventory-service-v1.0', now() - interval '8 year' + random() * interval '1 year',
-        'inventory-service-v1.0', now() - interval '6 year' + random() * interval '1 year');
-
-
-create temp table if not exists category_assignments as
-select p.product_id,
-       case
-           when p.product_id % 10 = 1 then 1
-           when p.product_id % 10 = 2 then 2
-           when p.product_id % 10 = 3 then 3
-           when p.product_id % 10 = 4 then 4
-           when p.product_id % 10 = 5 then 5
-           when p.product_id % 10 = 6 then 6
-           when p.product_id % 10 = 7 then 7
-           when p.product_id % 10 = 8 then 8
-           when p.product_id % 10 = 9 then 9
-           when p.product_id % 10 = 0 then 10
-           end                                              as category_id,
-       case
-           when p.product_id % 10 = 1 then 'iPhone'
-           when p.product_id % 10 = 2 then 'Designer Jeans'
-           when p.product_id % 10 = 3 then 'LED TV'
-           when p.product_id % 10 = 4 then 'Toy Train Set'
-           when p.product_id % 10 = 5 then 'Football'
-           when p.product_id % 10 = 6 then 'Mystery Novel'
-           when p.product_id % 10 = 7 then 'Coffee Table'
-           when p.product_id % 10 = 8 then 'Diamond Necklace'
-           when p.product_id % 10 = 9 then 'Supplement'
-           when p.product_id % 10 = 0 then 'Beef'
-           end || ' ' || (floor(random() * 10000)::integer) as product_name
-from generate_series(1, 150) as p(product_id);
+INSERT INTO category (name, created_by, created_date, last_modified_by, last_modified_date)
+VALUES ('Electronics', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Clothing', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Home & Garden', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Toys & Games', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Sports & Outdoors', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Books', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Furniture', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Jewelry', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Health & Beauty', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year'),
+       ('Food', 'inventory-service-v1.0', now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
+        'inventory-service-v1.0', now() - INTERVAL '6 year' + random() * INTERVAL '1 year');
 
 
-insert into product (name, description, price, created_by, created_date, last_modified_by, last_modified_date)
-select ca.product_name,
+CREATE TEMP TABLE IF NOT EXISTS category_assignments AS
+SELECT p.product_id,
+       CASE
+           WHEN p.product_id % 10 = 1 THEN 1
+           WHEN p.product_id % 10 = 2 THEN 2
+           WHEN p.product_id % 10 = 3 THEN 3
+           WHEN p.product_id % 10 = 4 THEN 4
+           WHEN p.product_id % 10 = 5 THEN 5
+           WHEN p.product_id % 10 = 6 THEN 6
+           WHEN p.product_id % 10 = 7 THEN 7
+           WHEN p.product_id % 10 = 8 THEN 8
+           WHEN p.product_id % 10 = 9 THEN 9
+           WHEN p.product_id % 10 = 0 THEN 10
+           END                                              AS category_id,
+       CASE
+           WHEN p.product_id % 10 = 1 THEN 'iPhone'
+           WHEN p.product_id % 10 = 2 THEN 'Designer Jeans'
+           WHEN p.product_id % 10 = 3 THEN 'LED TV'
+           WHEN p.product_id % 10 = 4 THEN 'Toy Train Set'
+           WHEN p.product_id % 10 = 5 THEN 'Football'
+           WHEN p.product_id % 10 = 6 THEN 'Mystery Novel'
+           WHEN p.product_id % 10 = 7 THEN 'Coffee Table'
+           WHEN p.product_id % 10 = 8 THEN 'Diamond Necklace'
+           WHEN p.product_id % 10 = 9 THEN 'Supplement'
+           WHEN p.product_id % 10 = 0 THEN 'Beef'
+           END || ' ' || (floor(random() * 10000)::INTEGER) AS product_name
+FROM generate_series(1, 150) AS p(product_id);
+
+
+INSERT INTO product (name, description, price, created_by, created_date, last_modified_by, last_modified_date)
+SELECT ca.product_name,
        'Description for ' || ca.product_name,
-       (random() * 10000)::numeric(19, 4),
+       (random() * 10000)::NUMERIC(19, 4),
        'inventory-service-v1.0',
-       now() - interval '4 year' + random() * interval '1 year',
+       now() - INTERVAL '4 year' + random() * INTERVAL '1 year',
        'inventory-service-v1.0',
-       now() - interval '2 year' + random() * interval '1 year'
-from category_assignments ca;
+       now() - INTERVAL '2 year' + random() * INTERVAL '1 year'
+FROM category_assignments ca;
 
 
-insert into product_category (product_id, category_id, created_by, created_date, last_modified_by, last_modified_date)
-select ca.product_id,
+INSERT INTO product_category (product_id, category_id, created_by, created_date, last_modified_by, last_modified_date)
+SELECT ca.product_id,
        ca.category_id,
        'inventory-service-v1.0',
-       now() - interval '8 year' + random() * interval '1 year',
+       now() - INTERVAL '8 year' + random() * INTERVAL '1 year',
        'inventory-service-v1.0',
-       now() - interval '6 year' + random() * interval '1 year'
-from category_assignments ca;
+       now() - INTERVAL '6 year' + random() * INTERVAL '1 year'
+FROM category_assignments ca;
 
 
-drop table if exists category_assignments;
+DROP TABLE IF EXISTS category_assignments;
 
-create temp table if not exists product_ids as
-select id as product_id
-from product;
+CREATE TEMP TABLE IF NOT EXISTS product_ids AS
+SELECT id AS product_id
+FROM product;
 
 
-insert into inventory (product_id, quantity, created_by, created_date, last_modified_by, last_modified_date)
-select pi.product_id,
-       (floor(random() * 10000) + 1)::integer                   as quantity,
-       'inventory-service-v1.0'                                   as created_by,
-       now() - interval '4 year' + random() * interval '1 year' as created_date,
-       'inventory-service-v1.0'                                   as last_modified_by,
-       now() - interval '2 year' + random() * interval '1 year' as last_modified_date
-from product_ids pi;
+INSERT INTO inventory (product_id, quantity, created_by, created_date, last_modified_by, last_modified_date)
+SELECT pi.product_id,
+       (floor(random() * 10000) + 1)::INTEGER                   AS quantity,
+       'inventory-service-v1.0'                                 AS created_by,
+       now() - INTERVAL '4 year' + random() * INTERVAL '1 year' AS created_date,
+       'inventory-service-v1.0'                                 AS last_modified_by,
+       now() - INTERVAL '2 year' + random() * INTERVAL '1 year' AS last_modified_date
+FROM product_ids pi;
 
-drop table if exists product_ids;
+DROP TABLE IF EXISTS product_ids;
 
-commit;
+COMMIT;

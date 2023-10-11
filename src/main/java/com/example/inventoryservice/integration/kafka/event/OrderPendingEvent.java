@@ -1,4 +1,4 @@
-package com.example.inventoryservice.integration.event;
+package com.example.inventoryservice.integration.kafka.event;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -13,12 +13,12 @@ public class OrderPendingEvent implements Serializable {
     static final long serialVersionUID = 12346L;
 
     Long orderId;
-    List<OrderItemDto> orderItemList;
+    List<OrderPendingItem> orderPendingItemList;
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class OrderItemDto {
+    public static class OrderPendingItem {
         Long productId;
-        Integer quantity;
+        Integer orderQuantity;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.inventoryservice.integration.event;
+package com.example.inventoryservice.integration.kafka.event;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
