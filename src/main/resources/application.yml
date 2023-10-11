@@ -48,6 +48,8 @@ spring:
     producers:
       order-item-not-available:
         topic-name: order-item-not-available
+      order-processing:
+        topic-name: order-processing
     consumers:
       order-pending:
         topic-name: order-pending

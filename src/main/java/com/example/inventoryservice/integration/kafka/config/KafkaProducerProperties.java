@@ -1,4 +1,4 @@
-package com.example.inventoryservice.config.kafka;
+package com.example.inventoryservice.integration.kafka.config;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @ConditionalOnProperty(name = "spring.kafka.enabled", havingValue = "true")
-public class KafkaConsumerProperties {
+public class KafkaProducerProperties {
 
-    @Value("${spring.kafka.consumers.order-pending.group-id}")
-    String orderPendingGroupId;
+    @Value("${spring.kafka.producers.order-item-not-available.topic-name}")
+    String orderItemNotAvailableTopicName;
 
+    @Value("${spring.kafka.producers.order-processing.topic-name}")
+    String orderProcessingTopicName;
 
 }
