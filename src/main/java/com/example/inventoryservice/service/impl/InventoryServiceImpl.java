@@ -79,6 +79,7 @@ public class InventoryServiceImpl implements InventoryService {
             }
             var orderProcessingEvent = OrderProcessingEvent.builder()
                     .orderId(event.getOrderId())
+                    .accountNumber(event.getAccountNumber())
                     .orderProcessingItemList(orderProcessingItemList)
                     .build();
             log.info("send orderProcessingEvent {}", orderProcessingEvent);

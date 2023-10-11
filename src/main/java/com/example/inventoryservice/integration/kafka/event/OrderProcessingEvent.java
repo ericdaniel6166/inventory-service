@@ -20,6 +20,7 @@ public class OrderProcessingEvent implements Serializable {
     static final long serialVersionUID = 12346L;
 
     Long orderId;
+    String accountNumber;
     List<OrderProcessingItem> orderProcessingItemList;
 
     @Data
