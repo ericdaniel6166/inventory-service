@@ -53,7 +53,7 @@ spring:
     consumers:
       order-pending:
         topic-name: order-pending
-        group-id: order-pending
+        group-id: order-pending-${app.application-name}
         properties:
           concurrency: ${app.kafka-concurrency}
 

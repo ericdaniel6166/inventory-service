@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS inventory
 (
     id                 BIGSERIAL
         PRIMARY KEY,
-    product_id         BIGINT REFERENCES product (id),
+    product_id         BIGINT,
     quantity           INT,
     created_by         VARCHAR(255),
     created_date       TIMESTAMP(6),

@@ -4,15 +4,14 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderPendingEvent implements Serializable {
-    static final long serialVersionUID = 12346L;
+public class OrderPendingEvent {
 
     Long orderId;
+    String accountNumber;
     List<OrderPendingItem> orderPendingItemList;
 
     @Data
