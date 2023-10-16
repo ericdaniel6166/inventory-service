@@ -11,6 +11,7 @@ app:
   kafka-port: 9092
   kafka-default-topic: notificationTopic
   kafka-concurrency: 3
+  context-path: api/inventory
 
 eureka:
   client:
@@ -71,7 +72,11 @@ management:
 
 server:
   port: ${app.server-port}
+  servlet:
+    context-path: /${app.context-path}
 
 logging:
   level:
     root: INFO
+  pattern:
+    level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
