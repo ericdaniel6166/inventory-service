@@ -12,11 +12,11 @@ public class OrderPendingEvent {
 
     Long orderId;
     String accountNumber;
-    List<OrderPendingItem> orderPendingItemList;
+    List<Item> itemList;
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class OrderPendingItem {
+    public static class Item {
         Long productId;
         Integer orderQuantity;
     }

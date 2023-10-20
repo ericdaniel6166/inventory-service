@@ -1,5 +1,6 @@
-package com.example.inventoryservice.integration.kafka.event;
+package com.example.inventoryservice.dto;
 
+import com.example.inventoryservice.enums.OrderStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,16 +8,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ItemNotAvailableEvent {
+public class OrderResponse {
 
     Long orderId;
+    String accountNumber;
+    OrderStatus orderStatus;
     List<Item> itemList;
 
     @Data
@@ -28,7 +32,6 @@ public class ItemNotAvailableEvent {
         Long productId;
         Integer orderQuantity;
         Integer inventoryQuantity;
+        BigDecimal productPrice;
     }
-
-
 }
