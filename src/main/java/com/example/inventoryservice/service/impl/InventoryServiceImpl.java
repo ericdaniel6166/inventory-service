@@ -1,7 +1,10 @@
 package com.example.inventoryservice.service.impl;
 
 import com.example.inventoryservice.dto.InventoryDto;
+import com.example.inventoryservice.dto.OrderRequest;
+import com.example.inventoryservice.dto.OrderResponse;
 import com.example.inventoryservice.dto.UpdateInventoryDto;
+import com.example.inventoryservice.enums.OrderStatus;
 import com.example.inventoryservice.integration.kafka.config.KafkaProducerProperties;
 import com.example.inventoryservice.integration.kafka.event.ItemNotAvailableEvent;
 import com.example.inventoryservice.integration.kafka.event.OrderPendingEvent;
@@ -36,26 +39,79 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Transactional
     @Override
-    public void handleOrderPendingEvent(OrderPendingEvent event) {
-        var inventoryDtoList = inventoryRepository.findAllByProductIdIn(event.getOrderPendingItemList().stream()
-                .map(OrderPendingEvent.OrderPendingItem::getProductId).toList());
+    public OrderResponse handleOrderPendingOpenFeign(OrderRequest request) {
+        var inventoryDtoList = inventoryRepository.findAllByProductIdIn(request.getItemList().stream()
+                .map(OrderRequest.Item::getProductId)
+                .toList());
         List<UpdateInventoryDto> updateInventoryDtoList = new ArrayList<>();
-        List<ItemNotAvailableEvent.ItemNotAvailable> itemNotAvailableList = new ArrayList<>();
-        List<OrderProcessingEvent.OrderProcessingItem> orderProcessingItemList = new ArrayList<>();
-        for (var orderPendingItem : event.getOrderPendingItemList()) {
+        List<OrderResponse.Item> processingItemList = new ArrayList<>();
+        List<OrderResponse.Item> notAvailableItemList = new ArrayList<>();
+        for (var orderPendingItem : request.getItemList()) {
+            InventoryDto inventoryDto = inventoryDtoList.stream()
+                    .filter(dto -> orderPendingItem.getProductId().equals(dto.getProductId()))
+                    .findFirst()
+                    .orElse(null);
+            var orderDetail = OrderResponse.Item.builder()
+                    .productId(orderPendingItem.getProductId())
+                    .orderQuantity(orderPendingItem.getOrderQuantity())
+                    .build();
+            if (inventoryDto == null || orderPendingItem.getOrderQuantity() > inventoryDto.getInventoryQuantity()) {
+                orderDetail.setInventoryQuantity(inventoryDto == null ? null : inventoryDto.getInventoryQuantity());
+                notAvailableItemList.add(orderDetail);
+            } else {
+                updateInventoryDtoList.add(new UpdateInventoryDto(inventoryDto.getInventoryId(), orderPendingItem.getOrderQuantity()));
+                orderDetail.setProductPrice(inventoryDto.getProductPrice());
+                processingItemList.add(orderDetail);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(notAvailableItemList)) {
+            return OrderResponse.builder()
+                    .orderId(request.getOrderId())
+                    .orderStatus(OrderStatus.ITEM_NOT_AVAILABLE)
+                    .itemList(notAvailableItemList)
+                    .build();
+        } else if (CollectionUtils.isNotEmpty(processingItemList)) {
+            LocalDateTime now = LocalDateTime.now();
+            for (var updateInventoryDto : updateInventoryDtoList) {
+                inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now);
+            }
+            return OrderResponse.builder()
+                    .orderId(request.getOrderId())
+                    .orderStatus(OrderStatus.PROCESSING)
+                    .accountNumber(request.getAccountNumber())
+                    .itemList(processingItemList)
+                    .build();
+        }
+        return OrderResponse.builder()
+                .orderId(request.getOrderId())
+                .orderStatus(OrderStatus.ERROR)
+                .accountNumber(request.getAccountNumber())
+                .build();
+
+    }
+
+    @Transactional
+    @Override
+    public void handleOrderPendingEvent(OrderPendingEvent event) {
+        var inventoryDtoList = inventoryRepository.findAllByProductIdIn(event.getItemList().stream()
+                .map(OrderPendingEvent.Item::getProductId).toList());
+        List<UpdateInventoryDto> updateInventoryDtoList = new ArrayList<>();
+        List<ItemNotAvailableEvent.Item> notAvailableItemList = new ArrayList<>();
+        List<OrderProcessingEvent.Item> processingItemList = new ArrayList<>();
+        for (var orderPendingItem : event.getItemList()) {
             InventoryDto inventoryDto = inventoryDtoList.stream()
                     .filter(dto -> orderPendingItem.getProductId().equals(dto.getProductId()))
                     .findFirst()
                     .orElse(null);
             if (inventoryDto == null || orderPendingItem.getOrderQuantity() > inventoryDto.getInventoryQuantity()) {
-                itemNotAvailableList.add(ItemNotAvailableEvent.ItemNotAvailable.builder()
+                notAvailableItemList.add(ItemNotAvailableEvent.Item.builder()
                         .productId(orderPendingItem.getProductId())
                         .orderQuantity(orderPendingItem.getOrderQuantity())
                         .inventoryQuantity(inventoryDto == null ? null : inventoryDto.getInventoryQuantity())
                         .build());
             } else {
                 updateInventoryDtoList.add(new UpdateInventoryDto(inventoryDto.getInventoryId(), orderPendingItem.getOrderQuantity()));
-                orderProcessingItemList.add(OrderProcessingEvent.OrderProcessingItem.builder()
+                processingItemList.add(OrderProcessingEvent.Item.builder()
                         .productId(orderPendingItem.getProductId())
                         .orderQuantity(orderPendingItem.getOrderQuantity())
                         .productPrice(inventoryDto.getProductPrice())
@@ -63,16 +119,16 @@ public class InventoryServiceImpl implements InventoryService {
             }
 
         }
-        if (CollectionUtils.isNotEmpty(itemNotAvailableList)) {
+        if (CollectionUtils.isNotEmpty(notAvailableItemList)) {
             var itemNotAvailableEvent = ItemNotAvailableEvent.builder()
                     .orderId(event.getOrderId())
-                    .itemNotAvailableList(itemNotAvailableList)
+                    .itemList(notAvailableItemList)
                     .build();
             log.info("send itemNotAvailableEvent {}", itemNotAvailableEvent);
             kafkaTemplate.send(kafkaProducerProperties.getOrderItemNotAvailableTopicName(), Event.builder()
                     .payload(itemNotAvailableEvent)
                     .build());
-        } else if (CollectionUtils.isNotEmpty(orderProcessingItemList)) {
+        } else if (CollectionUtils.isNotEmpty(processingItemList)) {
             LocalDateTime now = LocalDateTime.now();
             for (var updateInventoryDto : updateInventoryDtoList) {
                 inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now);
@@ -80,7 +136,7 @@ public class InventoryServiceImpl implements InventoryService {
             var orderProcessingEvent = OrderProcessingEvent.builder()
                     .orderId(event.getOrderId())
                     .accountNumber(event.getAccountNumber())
-                    .orderProcessingItemList(orderProcessingItemList)
+                    .itemList(processingItemList)
                     .build();
             log.info("send orderProcessingEvent {}", orderProcessingEvent);
             kafkaTemplate.send(kafkaProducerProperties.getOrderProcessingTopicName(), Event.builder()

@@ -1,4 +1,4 @@
-package com.example.inventoryservice.integration.kafka.event;
+package com.example.inventoryservice.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,26 +9,21 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ItemNotAvailableEvent {
+public class OrderRequest {
 
     Long orderId;
+    String accountNumber;
     List<Item> itemList;
 
     @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder
     public static class Item {
         Long productId;
         Integer orderQuantity;
-        Integer inventoryQuantity;
     }
-
-
 }
