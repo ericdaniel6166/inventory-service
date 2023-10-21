@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InventoryController {
+public class InventoryApi {
 
     final InventoryService inventoryService;
 
@@ -29,6 +29,7 @@ public class InventoryController {
 
     @PostMapping("/handle-order-pending-open-feign")
     public ResponseEntity<OrderResponse> handleOrderPendingOpenFeign(@RequestBody OrderRequest request) {
+//        Thread.sleep(1000L * 60 * 60);
         return ResponseEntity.ok(inventoryService.handleOrderPendingOpenFeign(request));
     }
 
