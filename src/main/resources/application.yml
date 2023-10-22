@@ -12,6 +12,12 @@ app:
   kafka-default-topic: notificationTopic
   kafka-concurrency: 3
   context-path: api/inventory
+  api-gateway-hostname: localhost
+  swagger-api-gateway-hostname: localhost
+  api-gateway-server-port: 8181
+  zipkin-hostname: localhost
+  zipkin-server-port: 9411
+  zipkin-context-path: api/v2/spans
 
 eureka:
   client:
@@ -59,6 +65,12 @@ spring:
           concurrency: ${app.kafka-concurrency}
 
 management:
+  tracing:
+    enabled: true
+    propagation:
+      type: b3
+    sampling:
+      probability: 1.0
   health:
     circuitbreakers:
       enabled: true
@@ -69,6 +81,9 @@ management:
   endpoint:
     health:
       show-details: always
+  zipkin:
+    tracing:
+      endpoint: http://${app.zipkin-hostname}:${app.zipkin-server-port}/${app.zipkin-context-path}
 
 server:
   port: ${app.server-port}
@@ -80,3 +95,13 @@ logging:
     root: INFO
   pattern:
     level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+
+swagger:
+  server:
+    url: http://${app.swagger-api-gateway-hostname}:${app.api-gateway-server-port}/${app.context-path}
