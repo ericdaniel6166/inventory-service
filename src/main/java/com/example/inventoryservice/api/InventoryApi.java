@@ -30,6 +30,7 @@ public class InventoryApi {
     @PostMapping("/handle-order-pending-open-feign")
     public ResponseEntity<OrderResponse> handleOrderPendingOpenFeign(@RequestBody OrderRequest request) {
 //        Thread.sleep(1000L * 60 * 60);
+        log.info("handleOrderPendingOpenFeign, orderId {}", request.getOrderId());
         return ResponseEntity.ok(inventoryService.handleOrderPendingOpenFeign(request));
     }
 
