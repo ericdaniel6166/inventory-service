@@ -1,7 +1,7 @@
 package com.example.inventoryservice.api;
 
-import com.example.inventoryservice.dto.OrderRequest;
-import com.example.inventoryservice.dto.OrderResponse;
+import com.example.inventoryservice.dto.OrderPendingRequest;
+import com.example.inventoryservice.dto.OrderPendingResponse;
 import com.example.inventoryservice.service.InventoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class InventoryApi {
     }
 
     @PostMapping("/handle-order-pending-open-feign")
-    public ResponseEntity<OrderResponse> handleOrderPendingOpenFeign(@RequestBody OrderRequest request) {
+    public ResponseEntity<OrderPendingResponse> handleOrderPendingOpenFeign(@RequestBody OrderPendingRequest request) {
         log.info("handleOrderPendingOpenFeign, orderId {}", request.getOrderId());
 //        Thread.sleep(1000L * 60 * 60);
         return ResponseEntity.ok(inventoryService.handleOrderPendingOpenFeign(request));
