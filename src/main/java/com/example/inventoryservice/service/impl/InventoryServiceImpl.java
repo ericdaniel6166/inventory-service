@@ -1,8 +1,8 @@
 package com.example.inventoryservice.service.impl;
 
 import com.example.inventoryservice.dto.InventoryDto;
-import com.example.inventoryservice.dto.OrderRequest;
-import com.example.inventoryservice.dto.OrderResponse;
+import com.example.inventoryservice.dto.OrderPendingRequest;
+import com.example.inventoryservice.dto.OrderPendingResponse;
 import com.example.inventoryservice.dto.UpdateInventoryDto;
 import com.example.inventoryservice.enums.OrderStatus;
 import com.example.inventoryservice.integration.kafka.config.KafkaProducerProperties;
@@ -39,19 +39,19 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Transactional
     @Override
-    public OrderResponse handleOrderPendingOpenFeign(OrderRequest request) {
+    public OrderPendingResponse handleOrderPendingOpenFeign(OrderPendingRequest request) {
         var inventoryDtoList = inventoryRepository.findAllByProductIdIn(request.getItemList().stream()
-                .map(OrderRequest.Item::getProductId)
+                .map(OrderPendingRequest.Item::getProductId)
                 .toList());
         List<UpdateInventoryDto> updateInventoryDtoList = new ArrayList<>();
-        List<OrderResponse.Item> processingItemList = new ArrayList<>();
-        List<OrderResponse.Item> notAvailableItemList = new ArrayList<>();
+        List<OrderPendingResponse.Item> processingItemList = new ArrayList<>();
+        List<OrderPendingResponse.Item> notAvailableItemList = new ArrayList<>();
         for (var orderPendingItem : request.getItemList()) {
             InventoryDto inventoryDto = inventoryDtoList.stream()
                     .filter(dto -> orderPendingItem.getProductId().equals(dto.getProductId()))
                     .findFirst()
                     .orElse(null);
-            var orderDetail = OrderResponse.Item.builder()
+            var orderDetail = OrderPendingResponse.Item.builder()
                     .productId(orderPendingItem.getProductId())
                     .orderQuantity(orderPendingItem.getOrderQuantity())
                     .build();
@@ -65,7 +65,7 @@ public class InventoryServiceImpl implements InventoryService {
             }
         }
         if (CollectionUtils.isNotEmpty(notAvailableItemList)) {
-            return OrderResponse.builder()
+            return OrderPendingResponse.builder()
                     .orderId(request.getOrderId())
                     .orderStatus(OrderStatus.ITEM_NOT_AVAILABLE)
                     .itemList(notAvailableItemList)
@@ -75,14 +75,14 @@ public class InventoryServiceImpl implements InventoryService {
             for (var updateInventoryDto : updateInventoryDtoList) {
                 inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now);
             }
-            return OrderResponse.builder()
+            return OrderPendingResponse.builder()
                     .orderId(request.getOrderId())
                     .orderStatus(OrderStatus.PROCESSING)
                     .accountNumber(request.getAccountNumber())
                     .itemList(processingItemList)
                     .build();
         }
-        return OrderResponse.builder()
+        return OrderPendingResponse.builder()
                 .orderId(request.getOrderId())
                 .orderStatus(OrderStatus.ERROR)
                 .accountNumber(request.getAccountNumber())

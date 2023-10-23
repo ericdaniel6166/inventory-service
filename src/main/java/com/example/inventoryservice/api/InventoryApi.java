@@ -1,7 +1,7 @@
 package com.example.inventoryservice.api;
 
-import com.example.inventoryservice.dto.OrderRequest;
-import com.example.inventoryservice.dto.OrderResponse;
+import com.example.inventoryservice.dto.OrderPendingRequest;
+import com.example.inventoryservice.dto.OrderPendingResponse;
 import com.example.inventoryservice.service.InventoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InventoryController {
+public class InventoryApi {
 
     final InventoryService inventoryService;
 
@@ -28,7 +28,9 @@ public class InventoryController {
     }
 
     @PostMapping("/handle-order-pending-open-feign")
-    public ResponseEntity<OrderResponse> handleOrderPendingOpenFeign(@RequestBody OrderRequest request) {
+    public ResponseEntity<OrderPendingResponse> handleOrderPendingOpenFeign(@RequestBody OrderPendingRequest request) {
+        log.info("handleOrderPendingOpenFeign, orderId {}", request.getOrderId());
+//        Thread.sleep(1000L * 60 * 60);
         return ResponseEntity.ok(inventoryService.handleOrderPendingOpenFeign(request));
     }
 
