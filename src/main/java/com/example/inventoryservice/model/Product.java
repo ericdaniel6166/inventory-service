@@ -43,7 +43,7 @@ public class Product extends BaseEntity<String> {
     @Column(name = "PRICE", nullable = false)
     private BigDecimal price;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "PRODUCT", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<ProductCategory> productCategories;
