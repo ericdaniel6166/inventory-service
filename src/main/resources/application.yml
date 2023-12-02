@@ -18,6 +18,8 @@ app:
   zipkin-hostname: localhost
   zipkin-server-port: 9411
   zipkin-context-path: api/v2/spans
+  mqtt-hostname: localhost
+  mqtt-port: 1883
 
 eureka:
   client:
@@ -63,6 +65,15 @@ spring:
         group-id: order-pending-${app.application-name}
         properties:
           concurrency: ${app.kafka-concurrency}
+  mqtt:
+    inbound:
+      enabled: true
+      url: tcp://${app.mqtt-hostname}:${app.mqtt-port}
+      topics:
+        - topic1
+        - topic2
+      completion-timeout: 50000 #ms
+      qos: 1 #Quality of Service (QoS) level
 
 management:
   tracing:
