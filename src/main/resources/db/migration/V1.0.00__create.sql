@@ -1,48 +1,48 @@
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS product
+CREATE TABLE IF NOT EXISTS PRODUCT
 (
-    id                 BIGSERIAL PRIMARY KEY,
-    name               VARCHAR(255)   NOT NULL,
-    description        TEXT,
-    price              NUMERIC(19, 4) NOT NULL,
-    created_by         VARCHAR(255),
-    created_date       TIMESTAMP(6),
-    last_modified_by   VARCHAR(255),
-    last_modified_date TIMESTAMP(6)
+    ID                 BIGSERIAL PRIMARY KEY,
+    NAME               VARCHAR(255)   NOT NULL,
+    DESCRIPTION        TEXT,
+    PRICE              NUMERIC(19, 4) NOT NULL,
+    CREATED_BY         VARCHAR(255),
+    CREATED_DATE       TIMESTAMP(6),
+    LAST_MODIFIED_BY   VARCHAR(255),
+    LAST_MODIFIED_DATE TIMESTAMP(6)
 );
 
-CREATE TABLE IF NOT EXISTS category
+CREATE TABLE IF NOT EXISTS CATEGORY
 (
-    id                 BIGSERIAL PRIMARY KEY,
-    name               VARCHAR(255) NOT NULL,
-    created_by         VARCHAR(255),
-    created_date       TIMESTAMP(6),
-    last_modified_by   VARCHAR(255),
-    last_modified_date TIMESTAMP(6)
+    ID                 BIGSERIAL PRIMARY KEY,
+    NAME               VARCHAR(255) NOT NULL,
+    CREATED_BY         VARCHAR(255),
+    CREATED_DATE       TIMESTAMP(6),
+    LAST_MODIFIED_BY   VARCHAR(255),
+    LAST_MODIFIED_DATE TIMESTAMP(6)
 );
 
-CREATE TABLE IF NOT EXISTS product_category
+CREATE TABLE IF NOT EXISTS PRODUCT_CATEGORY
 (
-    id                 BIGSERIAL PRIMARY KEY,
-    product_id         BIGINT REFERENCES product (id),
-    category_id        BIGINT REFERENCES category (id),
-    created_by         VARCHAR(255),
-    created_date       TIMESTAMP(6),
-    last_modified_by   VARCHAR(255),
-    last_modified_date TIMESTAMP(6)
+    ID                 BIGSERIAL PRIMARY KEY,
+    PRODUCT_ID         BIGINT REFERENCES PRODUCT (ID),
+    CATEGORY_ID        BIGINT REFERENCES CATEGORY (ID),
+    CREATED_BY         VARCHAR(255),
+    CREATED_DATE       TIMESTAMP(6),
+    LAST_MODIFIED_BY   VARCHAR(255),
+    LAST_MODIFIED_DATE TIMESTAMP(6)
 );
 
-CREATE TABLE IF NOT EXISTS inventory
+CREATE TABLE IF NOT EXISTS INVENTORY
 (
-    id                 BIGSERIAL
+    ID                 BIGSERIAL
         PRIMARY KEY,
-    product_id         BIGINT,
-    quantity           INT,
-    created_by         VARCHAR(255),
-    created_date       TIMESTAMP(6),
-    last_modified_by   VARCHAR(255),
-    last_modified_date TIMESTAMP(6)
+    PRODUCT_ID         BIGINT,
+    QUANTITY           INT,
+    CREATED_BY         VARCHAR(255),
+    CREATED_DATE       TIMESTAMP(6),
+    LAST_MODIFIED_BY   VARCHAR(255),
+    LAST_MODIFIED_DATE TIMESTAMP(6)
 );
 
 COMMIT;

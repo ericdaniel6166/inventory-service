@@ -11,7 +11,7 @@ import com.example.inventoryservice.integration.kafka.event.OrderPendingEvent;
 import com.example.inventoryservice.integration.kafka.event.OrderProcessingEvent;
 import com.example.inventoryservice.repository.InventoryRepository;
 import com.example.inventoryservice.service.InventoryService;
-import com.example.springbootmicroservicesframework.kafka.event.Event;
+import com.example.springbootmicroservicesframework.integration.kafka.event.Event;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
