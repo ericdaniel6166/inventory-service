@@ -20,7 +20,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Table(name = "product")
+@Table(name = "PRODUCT")
 @Entity
 @Data
 @Builder
@@ -31,16 +31,16 @@ public class Product extends BaseEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "PRICE", nullable = false)
     private BigDecimal price;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
-@Table(name = "product_category")
+@Table(name = "PRODUCT_CATEGORY")
 @Entity
 @Data
 @Builder
@@ -29,19 +29,19 @@ public class ProductCategory extends BaseEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
     private Category category;
 
 }

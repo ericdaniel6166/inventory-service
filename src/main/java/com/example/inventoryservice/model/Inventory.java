@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
-@Table(name = "inventory")
+@Table(name = "INVENTORY")
 @Entity
 @Data
 @Builder
@@ -25,12 +25,12 @@ public class Inventory extends BaseEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;
 
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "PRODUCT_ID", nullable = false)
     private Long productId;
 }

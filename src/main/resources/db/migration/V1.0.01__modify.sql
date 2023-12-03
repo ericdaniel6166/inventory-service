@@ -1,2 +1,2 @@
-CREATE UNIQUE INDEX inventory_product_id_uindex
-    ON inventory (product_id);
+CREATE UNIQUE INDEX INVENTORY_PRODUCT_ID_UINDEX
+    ON INVENTORY (PRODUCT_ID);

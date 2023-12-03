@@ -19,7 +19,7 @@ import lombok.ToString;
 
 import java.util.List;
 
-@Table(name = "category")
+@Table(name = "CATEGORY")
 @Entity
 @Data
 @Builder
@@ -30,10 +30,10 @@ public class Category extends BaseEntity<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
