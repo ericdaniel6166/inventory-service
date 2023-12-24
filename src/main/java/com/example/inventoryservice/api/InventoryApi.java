@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InventoryApi {
 
-    final InventoryService inventoryService;
+    InventoryService inventoryService;
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {

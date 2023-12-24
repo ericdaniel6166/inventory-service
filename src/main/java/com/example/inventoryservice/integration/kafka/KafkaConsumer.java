@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-    final ModelMapper modelMapper;
+    ModelMapper modelMapper;
 
-    final InventoryService inventoryService;
+    InventoryService inventoryService;
 
     @KafkaListener(topics = "${spring.kafka.consumers.order-pending.topic-name}",
             groupId = "${spring.kafka.consumers.order-pending.group-id}",
