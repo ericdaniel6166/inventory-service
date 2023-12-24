@@ -1,4 +1,4 @@
-package com.example.inventoryservice.config;
+package com.example.inventoryservice.integration.mqtt;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
