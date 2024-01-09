@@ -24,8 +24,9 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Query("""
             update Inventory i 
             set i.quantity = (i.quantity - :orderQuantity), 
-            i.lastModifiedDate = :now 
+            i.lastModifiedDate = :now, 
+            i.lastModifiedBy = :currentAuditor
             where i.id = :inventoryId
             """)
-    void update(Long inventoryId, Integer orderQuantity, LocalDateTime now);
+    void update(Long inventoryId, Integer orderQuantity, LocalDateTime now, String currentAuditor);
 }
