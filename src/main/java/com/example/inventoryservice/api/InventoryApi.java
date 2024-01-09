@@ -3,6 +3,8 @@ package com.example.inventoryservice.api;
 import com.example.inventoryservice.dto.OrderPendingRequest;
 import com.example.inventoryservice.dto.OrderPendingResponse;
 import com.example.inventoryservice.service.InventoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +29,7 @@ public class InventoryApi {
         return ResponseEntity.ok("test");
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/handle-order-pending-open-feign")
     public ResponseEntity<OrderPendingResponse> handleOrderPendingOpenFeign(@RequestBody OrderPendingRequest request) {
         log.info("handleOrderPendingOpenFeign, orderId {}", request.getOrderId());

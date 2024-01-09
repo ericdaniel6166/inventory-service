@@ -12,6 +12,7 @@ import com.example.inventoryservice.integration.kafka.event.OrderProcessingEvent
 import com.example.inventoryservice.repository.InventoryRepository;
 import com.example.inventoryservice.service.InventoryService;
 import com.example.springbootmicroservicesframework.integration.kafka.event.Event;
+import com.example.springbootmicroservicesframework.utils.AppSecurityUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -73,7 +74,7 @@ public class InventoryServiceImpl implements InventoryService {
         } else if (CollectionUtils.isNotEmpty(processingItemList)) {
             LocalDateTime now = LocalDateTime.now();
             for (var updateInventoryDto : updateInventoryDtoList) {
-                inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now);
+                inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now, AppSecurityUtils.getCurrentAuditor());
             }
             return OrderPendingResponse.builder()
                     .orderId(request.getOrderId())
@@ -131,7 +132,7 @@ public class InventoryServiceImpl implements InventoryService {
         } else if (CollectionUtils.isNotEmpty(processingItemList)) {
             LocalDateTime now = LocalDateTime.now();
             for (var updateInventoryDto : updateInventoryDtoList) {
-                inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now);
+                inventoryRepository.update(updateInventoryDto.getInventoryId(), updateInventoryDto.getOrderQuantity(), now, AppSecurityUtils.getCurrentAuditor());
             }
             var orderProcessingEvent = OrderProcessingEvent.builder()
                     .orderId(event.getOrderId())
