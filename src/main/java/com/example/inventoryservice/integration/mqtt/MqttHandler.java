@@ -15,7 +15,7 @@ public class MqttHandler {
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
         return message -> {
-            Object topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC); //
+            Object topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC); //receive all topics
             if (ObjectUtils.isNotEmpty(topic)) {
                 System.out.println(String.format("topic: %s, payload: %s, headers: %s", topic, message.getPayload(), message.getHeaders()));
             }
